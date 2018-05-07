@@ -12,13 +12,13 @@ brew install elasticsearch
 - elasticsearch가 정상적으로 설치 되었는지 확인한다. 아래 명령어 입력 후 브라우저 상에서 <code>localhost:9200</code> 으로 접근한다.
 
 ```
-> elasticsearch
+elasticsearch
 ```
 
 - json 으로 결과 값이 나오는걸 확인했다면, python 패키지를 설치해준다.
 
 ```
-    pip install elasticsearch
+pip install elasticsearch
 ```
 
 - python 코드로 아래와 같이 입력한다. (이 때, 2번이 실행중이어야 한다.)
