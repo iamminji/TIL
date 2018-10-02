@@ -28,7 +28,7 @@ _(단, 현재 키보드가 해피해킹이고 중간에 내가 몇 개 바꿔서
   
 - Duplicate Current Line (현재 줄 복제)
   
-<code>command + D</command> 하면 현재 커서가 있는 줄이 바로 커서 아래에 그대로 복제가 된다.
+<code>command + D</command></code> 하면 현재 커서가 있는 줄이 바로 커서 아래에 그대로 복제가 된다.
 
   
 - AutoIndent (자동 줄 바꿈 정리)
