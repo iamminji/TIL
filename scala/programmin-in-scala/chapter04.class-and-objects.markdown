@@ -33,7 +33,10 @@ acc가 비록 val 로 선언되었지만 객체의 내부는 변경이 가능하
 <pre><code>class ChecksumAccumulator {
     private var sum = 0
 
-    /*함수 명 뒤에 오는 것은 반환형으로 Unit은 자바의 void와 같다.*/
+    /*함수 명 뒤에 오는 것은 반환형으로 Unit은 반환형이 Unit 값이다.
+    * 이 값을 빈 괄호 () 로 표기한다.
+    * () 라는 값이 존재하므로 자바의 void와는 다르다.
+    */
     def add(b: Byte): Unit = {
         b = 1 // error!
         sum += b
