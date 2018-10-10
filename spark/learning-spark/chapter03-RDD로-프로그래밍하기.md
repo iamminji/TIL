@@ -168,7 +168,7 @@ __제로 밸류(zero value)__ 를 인자로 받는다. 이 값은 수행하는 �
 |     top(num)     | RDD의 값들 중 상위 num개 리턴  | rdd.top(2)  | {(3, 3)} |
 |     takeOrdered(num)(ordering)     | 제공된 ordering 기준으로 num개 값 리턴  | rdd.takeSamples(false, 1)  | 생략 |
 |     takeSample(withReplacement, num, [seed])    | 무작위 값들 리턴  | rdd.takeSamples(false, 1)  | 생략 |
-|     reduce(func)    | RDD의 값들을 병ㄹ렬로 병합 연산한다.  | rdd.reduce((x, y) => x+y) | 9 |
+|     reduce(func)    | RDD의 값들을 병렬로 병합 연산한다.  | rdd.reduce((x, y) => x+y) | 9 |
 |     fold(zero)(func)    | reduce()와 동일하나 제로 밸류를 넣어준다. | rdd.fold(0)((x, y) => x+y) | 9 |
 |     aggregate(zeroValue)<seqOp, combOp)   | reduce()와 유사하나 다른 타입을 리턴한다. | rdd.aggregate(((0, 0)))((x, y) => (x._1 + y, x._2 + 1), (x, y) => (x._1 + y._1, x._2 + y._2))  | (9, 4) |
   
