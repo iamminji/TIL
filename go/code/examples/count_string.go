@@ -1,8 +1,8 @@
-package main
+package examples
 
 import "fmt"
 
-func CountCharacterNum(s1 string) {
+func CountCharacterNum(s1 string) map[string]int {
 
 	var dict = make(map[string]int)
 
@@ -10,9 +10,10 @@ func CountCharacterNum(s1 string) {
 		dict[string(char)] += 1
 	}
 
-	fmt.Println(dict)
+	return dict
 }
 
 func main() {
-	CountCharacterNum("Hello World!")
+	r := CountCharacterNum("Hello World!")
+	fmt.Println(r)
 }
