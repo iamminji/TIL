@@ -66,8 +66,9 @@ This is A
 <code>super</code>를 호출했을 때 <code>class</code>나 <code>trait</code>의 메서드를 호출하게 되는데, 이 때 따르는 룰을 __linearization__  이라 한다.
 이 룰이 호출 순서를 결정한다.
 
-이 룰에 의하여 중복된 부분의 콜인 A -> AnyRef -> Any 가 한번만 나오게 된다. C 가 먼저 호출 되므로 최종적으로 C -> B -> A -> AnyRef -> Any 가 된다카더라. 
-결과적으로 다이아몬드 문제를 피하게 된다.
+이 룰에 의하여 중복된 부분의 콜인 A -> AnyRef -> Any 가 한번만 나오게 된다. C 가 먼저 호출 되므로 최종적으로 
+```C -> B -> A -> AnyRef -> Any``` 가 된다카더라. 
+결과적으로 다이아몬드 문제를 피할 수 있다.
 
 
 * 참고
