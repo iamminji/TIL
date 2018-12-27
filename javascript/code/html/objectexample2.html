@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Object Example</title>
+    <script type="text/javascript">
+        function book(title, author) {
+            this.title = title;
+            this.author = author;
+        }
+    </script>
+</head>
+<body>
+    <script type="text/javascript">
+        var myBook = new book("javascript", "Unknown");
+        document.write("Book name is : " + myBook.title + "<br>");
+        document.write("Book author is : " + myBook.author + "<br>");
+    </script>
+</body>
+</html>

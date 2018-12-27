@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Try-Catch-Finally</title>
+    <head>
+        <script type="text/javascript">
+            function myFunc() {
+                var a = 100;
+                try {
+                    alert("Value of variable a is : " + a);
+                } catch (e) {
+                    alert("Error: " + e.description);
+                } finally {
+                    alert("Finally block will always execute!");
+                }
+            }
+        </script>
+    </head>
+</head>
+<body>
+<p>Click the following to see the result:</p>
+<form>
+    <input type="button" value="Click Me" onclick="myFunc();"/>
+</form>
+</body>
+</html>
