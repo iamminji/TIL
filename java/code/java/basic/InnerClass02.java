@@ -1,4 +1,4 @@
-
+package java.basic;
 
 class OuterClass02 {
     private int num = 175;

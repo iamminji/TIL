@@ -1,3 +1,4 @@
+package java.basic;
 
 interface Message {
     String greet();

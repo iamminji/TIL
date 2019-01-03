@@ -1,3 +1,4 @@
+package java.basic;
 
 class OuterClass01 {
     int num;

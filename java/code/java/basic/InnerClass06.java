@@ -1,3 +1,4 @@
+package java.basic;
 
 public class InnerClass06 {
     static class NestedClass {

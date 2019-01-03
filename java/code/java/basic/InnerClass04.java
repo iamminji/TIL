@@ -1,3 +1,4 @@
+package java.basic;
 
 abstract class AnonymousClass {
     public abstract void myMethod();
