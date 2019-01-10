@@ -54,3 +54,11 @@ function f3() {
 }
 
 f3();
+
+///////////////////////////////////////////
+// Functions
+///////////////////////////////////////////
+
+var adder = new Function('a', 'b', 'return a+b');
+console.log(adder(1,2));
+console.log(adder.constructor === Function);

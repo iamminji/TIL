@@ -169,6 +169,7 @@ console.log(p2.age); // 100
 ### 생성자
 
 프로토타입 객체의 멤버로 있는 `constructor` 는 해당 프로토타입 객체를 생성했던 함수에 대한 참조이다.
+즉, 이 `constructor` 속성은 원본 생성자 함수 자신을 가리키고 있는 것이다.
 
 <pre><code>Person -> prototype
 prototype.cosntructor -> Person
@@ -191,3 +192,7 @@ p1.constructor.prototype == Person.prototype
 
 함수의 지역 변수는 외부에서 접근할 수 없는 비공개 변수이므로 이러한 지역 변수가 객체의 상태값을 가지고 있으면 된다. 그러나 이럴 경우 공개 멤버가 비공개 변수에 
 직접 접근할 수 없게 되므로, 공개 멤버는 또 내부 변수에 접근할 수 있는 내부 함수를 두고서 이 함수를 통해 내부 상태값에 접근해야 한다.
+
+
+## 읽어보면 좋을 글
+- [https://developer.mozilla.org/ko/docs/Learn/JavaScript/Objects/Object_prototypes](https://developer.mozilla.org/ko/docs/Learn/JavaScript/Objects/Object_prototypes)
