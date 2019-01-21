@@ -66,3 +66,24 @@ spark-submit --class com.my.package.WordCount /path/to/spark-tutorial-test.jar /
 ```
 
 하면 정상 동작
+
+## 스파크 명령어
+
+### run-example
+스파크 배포판엔 기본적으로 예제 코드가 있다.
+
+```
+run-example SparkPi
+```
+
+위의 명령어를 치면 pi 가 출력된다.
+
+### spark-submit
+스파크 실행 명령어로, 어떤 특별한 로직을 수행하는건 아니고 자바의 리플렉션 API 를 이용해 사용자가 지정한 클래스의 메인함수를 실행하는 스파크의 런처 모듈 중 하나다.
+
+>스파크 애플리케이션을 실행하기 위해서는 메인 함수를 가진 애플리케이션을 작성하고, 스파크에서 제공하는 `spark-submit` 스크립트를 이용해 실행한다.
+
+### 스파크 잡 죽이기
+```
+yarn application -kill <application_id>
+```
