@@ -83,7 +83,12 @@ run-example SparkPi
 
 >스파크 애플리케이션을 실행하기 위해서는 메인 함수를 가진 애플리케이션을 작성하고, 스파크에서 제공하는 `spark-submit` 스크립트를 이용해 실행한다.
 
-### 스파크 잡 죽이기
+### 스파크 잡 죽이기 (클러스터 매니저로 얀 쓸때)
 ```
 yarn application -kill <application_id>
 ```
+
+### assembly
+스파크 실행 시 의존하고 있는 라이브러리들을 옵션 jar 를 줘서 실행할 수 도 있지만 이는 넘나 귀찮은 짓이다. 그때 사용할 수 있는 것이 바로 `assembly` 다.
+
+(`project/assembly.sbt` 파일을 생성하여 내용을 작성해야 한다!)
