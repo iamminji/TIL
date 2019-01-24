@@ -54,6 +54,45 @@ __배열의 원소는 변경 가능하다__
 ### 예외처리
 스칼라는 자바와는 다르게 `finally` 구문안에서 무조건 값을 덮어 씌우지 않는다. 명시적으로 `return` 문을 사용하거나 예외를 발생시켜야 원래의 결과를 덮어 씌운다.
 
+### 상위 타입 경계 Upper type Bounds
+상위 타입 경계는 `T <: A` 형식으로 사용하며 이는 타입 `A`의 서브 타입 `T` 란 의미이다.
+
+```
+abstract class Animal {
+ def name: String
+}
+
+abstract class Pet extends Animal {}
+
+class Cat extends Pet {
+  override def name: String = "Cat"
+}
+
+class Dog extends Pet {
+  override def name: String = "Dog"
+}
+
+class Lion extends Animal {
+  override def name: String = "Lion"
+}
+
+class PetContainer[P <: Pet](p: P) {
+  def pet: P = p
+}
+
+// Pet 의 서브타입인 Dog, Cat 은 PetContainer 에 담기지만...
+val dogContainer = new PetContainer[Dog](new Dog)
+val catContainer = new PetContainer[Cat](new Cat)
+
+// Lion 은 실패한다! Lion 은 Pet의 subtype 이 아니고 Animal 이기 때문이다.
+val lionContainer = new PetContainer[Lion](new Lion)
+```
+
+클래스 `PetContainer` 는 파라미터 `P` 를 가지는데 이는 `Pet` 의 서브 타입인 `Dog`, `Cat` 이 된다.
+
+### 하위 타입 경계 Lower Type Bounds
+
+
 ## 스칼라 공부 시 참고
 - [scala tutorial](https://www.tutorialspoint.com/scala/index.htm)
 - [스칼라 도큐먼트 한국어 번역](https://docs.scala-lang.org/ko/tutorials/tour/tour-of-scala.html)
