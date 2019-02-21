@@ -92,3 +92,11 @@ yarn application -kill <application_id>
 스파크 실행 시 의존하고 있는 라이브러리들을 옵션 jar 를 줘서 실행할 수 도 있지만 이는 넘나 귀찮은 짓이다. 그때 사용할 수 있는 것이 바로 `assembly` 다.
 
 (`project/assembly.sbt` 파일을 생성하여 내용을 작성해야 한다!)
+
+### key-pair rdd statistics
+pair 포맷이 (key, 1) 형태일 때
+```
+val rdd =pair.reduceByKey(_+_).map(x=>x._2)
+// rdd.mean, rdd.max, rdd.min
+```
+
