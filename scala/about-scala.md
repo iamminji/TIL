@@ -1,5 +1,7 @@
 # Scala
 
+마틴 오더스키가 만든 [scala by example](https://www.scala-lang.org/docu/files/ScalaByExample.pdf) 읽어볼 것
+
 ## 스칼라의 특징
 - 정적 타입
 - 객체지향 프로그래밍
@@ -113,14 +115,31 @@ res6: Int = 3
 scala> 1 + 2 * 3
 res10: Int = 7
 
-scala> 1.+(2)*3
+scala> 1.+(2) * 3
 res11: Int = 9
 ```
 
 ### 기타
-스칼라는 꼬리 재귀 최적화 (tail call optimization) 을 수행하지 않는다.
-꼬리 재귀 최적화란 꼬리 재귀 함수를 일반 루프로 변환하는 것이다. (꼬리 재귀라는 말은 재귀 호출이 어떤 식의 맨 마지막에 벌어지는 일이라서 붙은 이름이다. 표현식의 반환 값은 마지막 호출이 반환하는 값이다.)
+
+#### 꼬리 재귀
+꼬리 재귀란 마지막 연산이 자기 자신을 호출하는 재귀 연산인 경우를 의미하고 꼬리재귀 최적화(tail call optimization) 는 이 꼬리 재귀 함수를 일반 루프로 변환하는 것이다.
+스칼라 자체는 꼬리재귀 최적화를(JVM 언어가 그렇듯) 수행하지 않지만 `tailrec` 어노테이션을 이용하면 가능하다.
+
+다음과 같은 경우에서 num이 0보다 큰 else statement 같은 경우는 꼬리재귀가 아니다. 연산이 있기 때문이다.
+```
+def recursive(num: Int) : Int = {
+    if (num == 0) {
+        return 0
+    } else {
+        return recursive(num-1) + 1
+    }
+}
+```
+
+루프를 사용하면 스택 오버 플로우의 걱정도 없고, 재귀 호출의 비용보다 저렴하다. 
+
 
 ## 스칼라 공부 시 참고
 - [scala tutorial](https://www.tutorialspoint.com/scala/index.htm)
 - [스칼라 도큐먼트 한국어 번역](https://docs.scala-lang.org/ko/tutorials/tour/tour-of-scala.html)
+
