@@ -53,6 +53,24 @@ __배열의 원소는 변경 가능하다__
 
 >등호가 없으면 결과 타입이 `Unit` 인 `프로시저` 라고 부른다. (사실 똑같음)
 
+#### 인자 값으로 함수 사용 (인자 목록 추론)
+
+```
+scala> def m1[A](a: A, f: A => String) = f(a)
+m1: [A](a: A, f: A => String)String
+
+scala> def m2[A](a: A)(f: A => String) = f(a)
+m2: [A](a: A)(f: A => String)String
+
+scala> m1(100, i => s"$i + $i")
+<console>:13: error: missing parameter type
+       m1(100, i => s"$i + $i")
+               ^
+
+scala> m2(100)(i => s"$i + $i")
+res1: String = 100 + 100
+```
+
 ### 예외처리
 스칼라는 자바와는 다르게 `finally` 구문안에서 무조건 값을 덮어 씌우지 않는다. 명시적으로 `return` 문을 사용하거나 예외를 발생시켜야 원래의 결과를 덮어 씌운다.
 
@@ -119,6 +137,21 @@ scala> 1.+(2) * 3
 res11: Int = 9
 ```
 
+아래와 같이 괄호를 생략하는 과정도 가능하다
+
+```
+scala> List(1, 2, 3, 4).filter((i: Int) => isEven(i)).foreach((i: Int) => println(i))
+scala> List(1, 2, 3, 4).filter(i => isEven(i)).foreach(i => println(i))
+scala> List(1, 2, 3, 4).filter(isEven(_)).foreach(println(_))
+scala> List(1, 2, 3, 4).filter(isEven).foreach(println)
+scala> List(1, 2, 3, 4) filter isEven foreach println
+```
+
+### 암시 (implicit)
+암시를 사용하는 이유
+- 준비를 위한 코드를 없애준다.
+- 매개변수화한 타입을 받는 메서드에 사용해서 버그를 줄이거나 허용되는 타입을 제한하기 위한 제약사항으로 사용한다.
+
 ### 기타
 
 #### 꼬리 재귀
@@ -136,10 +169,8 @@ def recursive(num: Int) : Int = {
 }
 ```
 
-루프를 사용하면 스택 오버 플로우의 걱정도 없고, 재귀 호출의 비용보다 저렴하다. 
-
+루프를 사용하면 스택 오버 플로우의 걱정도 없고, 재귀 호출의 비용보다 저렴하다.
 
 ## 스칼라 공부 시 참고
 - [scala tutorial](https://www.tutorialspoint.com/scala/index.htm)
 - [스칼라 도큐먼트 한국어 번역](https://docs.scala-lang.org/ko/tutorials/tour/tour-of-scala.html)
-

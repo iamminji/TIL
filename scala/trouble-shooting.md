@@ -72,3 +72,24 @@ res5: scala.collection.mutable.Iterable[Unit] = ArrayBuffer((), (), ())
 #### ref
 - [https://stackoverflow.com/questions/8301947/what-is-the-difference-between-javaconverters-and-javaconversions-in-scala](https://stackoverflow.com/questions/8301947/what-is-the-difference-between-javaconverters-and-javaconversions-in-scala)
 
+### isBlank vs isEmpty
+
+StringUtils.isBlank()
+
+```
+StringUtils.isBlank(null)      = true
+StringUtils.isBlank("")        = true  
+StringUtils.isBlank(" ")       = true  
+StringUtils.isBlank("bob")     = false  
+StringUtils.isBlank("  bob  ") = false
+```
+
+StringUtils.isEmpty()
+
+```
+StringUtils.isEmpty(null)      = true
+StringUtils.isEmpty("")        = true  
+StringUtils.isEmpty(" ")       = false  
+StringUtils.isEmpty("bob")     = false  
+StringUtils.isEmpty("  bob  ") = false
+```
