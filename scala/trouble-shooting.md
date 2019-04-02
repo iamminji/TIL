@@ -133,5 +133,8 @@ res2: Iterable[String] = List(hello, world, test)
 
 scala> testmap.map(_._2).flatten
 res3: scala.collection.immutable.Iterable[String] = List(hello, world, test)
+
+scala> testmap.flatMap(_._2)
+res4: scala.collection.immutable.Iterable[String] = List(hello, world, test)
 ```
 
