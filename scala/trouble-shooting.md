@@ -93,3 +93,45 @@ StringUtils.isEmpty(" ")       = false
 StringUtils.isEmpty("bob")     = false  
 StringUtils.isEmpty("  bob  ") = false
 ```
+
+### 스칼라에서 서로 다른 사이즈의 리스트를 동시에 순회하는 법
+`zipAll` 이라는 리스트에 멤버가 있다.
+
+```
+scala> val list1 = List("a", "b", "c")
+list1: List[String] = List(a, b, c)
+
+scala> val list2 = List("x", "y")
+list2: List[String] = List(x, y)
+
+scala> list1.zipAll(list2, "", "")
+res0: List[(String, String)] = List((a,x), (b,y), (c,""))
+```
+
+`zipAll` 은 세가지를 arguments 로 받는다.
+- 같이 순회할 다른 리스트
+- zipAll 멤버를 호출한 리스트의 길이가 짧은 경우 사용할 기본 값
+- 다른 리스트의 길이가 짧은 경우 사용할 기본 값
+
+#### ref
+- [https://stackoverflow.com/questions/35405607/zip-two-lists-of-different-lengths-with-default-element-to-fill](https://stackoverflow.com/questions/35405607/zip-two-lists-of-different-lengths-with-default-element-to-fill)
+
+### Map 에서 Value 만 가져오는 법
+
+```
+scala> val testmap = scala.collection.immutable.HashMap[String, List[String]]("1" -> List("hello", "world"), "2" -> List("test"))
+testmap: scala.collection.immutable.HashMap[String,List[String]] = Map(1 -> List(hello, world), 2 -> List(test))
+
+scala> testmap.values
+res0: Iterable[List[String]] = MapLike.DefaultValuesIterable(List(hello, world), List(test))
+
+scala> testmap.map(_._2)
+res1: scala.collection.immutable.Iterable[List[String]] = List(List(hello, world), List(test))
+
+scala> testmap.values.flatten
+res2: Iterable[String] = List(hello, world, test)
+
+scala> testmap.map(_._2).flatten
+res3: scala.collection.immutable.Iterable[String] = List(hello, world, test)
+```
+

@@ -111,3 +111,7 @@ val rdd =pair.reduceByKey(_+_).map(x=>x._2)
 
 ##### 어큐뮬레이터 변수
 브로드캐스트가 읽기 전용 변수라면 어큐뮬레이터는 쓰기 전용 변수라고 생각하면 된다.
+
+### spark session vs spark context
+spark 2.0 부터는 SparkSession 이 SparkContext 를 모두 대치할 수 있다는 듯
+
