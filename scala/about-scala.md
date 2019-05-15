@@ -152,6 +152,55 @@ scala> List(1, 2, 3, 4) filter isEven foreach println
 - 준비를 위한 코드를 없애준다.
 - 매개변수화한 타입을 받는 메서드에 사용해서 버그를 줄이거나 허용되는 타입을 제한하기 위한 제약사항으로 사용한다.
 
+#### 암시적 인자 처리 규칙
+- 마지막 인자 목록에만 (인자가 단 하나뿐인 메서드의 유일한 인자를 포함해서) 암시적 인자가 들어갈 수 있다.
+- `implicit` 키워드는 인자 목록의 맨 처음에 와야하며, 오직 한 번만 나타날 수 있다. 인자 목록 안에서 암시적 인자 다음에 '비암시적' 인자가 따라올 수 없다.
+- 인자 목록이 `implicit` 키워드로 시작하면, 그 인자 목록 아느이 모든 인자가 암시적 인자가 된다.
+
+그러나 해당 규칙을 깨는 예외들이 있다.
+
+```
+scala> class Bad {
+     | def m(i: Int, implicit s: String) = "boo"
+<console>:2: error: identifier expected but 'implicit' found.
+       def m(i: Int, implicit s: String) = "boo"
+                     ^
+
+scala> }
+<console>:1: error: eof expected but '}' found.
+       }
+       ^
+
+scala> class Bad2 {
+     | def m(i: Int)(implicit s: String)(implicit d:Double) = "boo"
+<console>:2: error: an implicit parameter section must be last
+       def m(i: Int)(implicit s: String)(implicit d:Double) = "boo"
+                     ^
+<console>:2: error: multiple implicit parameter sections are not allowed
+       def m(i: Int)(implicit s: String)(implicit d:Double) = "boo"
+                                         ^
+
+scala> }
+<console>:1: error: eof expected but '}' found.
+       }
+       ^
+
+scala> class Good1 {
+     | def m(i: Int)(implicit s: String, d:Double) = "boo"
+     | }
+defined class Good1
+
+scala> class Good2 {
+     | def m(implicit i:Int, s:String, d:Double) = "boo"
+     | }
+defined class Good2
+
+scala>
+```
+
+### 지연 (lazy)
+메서드의 경우 메서드를 호출할 때 마다 본문을 실행한다. `lazy` 값에서는 초기화 본문은 해당 값을 처음으로 사용하는 순간 오직 한번만 평가된다.
+
 ### 기타
 
 #### 꼬리 재귀
