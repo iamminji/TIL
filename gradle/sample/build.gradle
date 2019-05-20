@@ -1,0 +1,64 @@
+
+task hello {
+    doLast {
+        println 'Hello Gradle world!'
+    }
+}
+
+
+hello.doFirst {
+    println 'Hello Venus'
+}
+
+
+hello.configure {
+    doLast {
+        println 'Hello Mars'
+    }
+}
+
+
+hello.configure {
+    doLast {
+        println 'Hello Jupiter'
+    }
+}
+
+
+task upper {
+    doLast {
+        String someString = "mY_nAmE"
+        println "Original: $someString"
+        println "Upper case: ${someString.toUpperCase()}"
+    }
+}
+
+
+task count {
+    doLast {
+        4.times { print "$it " }
+    }
+}
+
+
+/* task hello 먼저 실행 */
+task intro {
+    dependsOn hello
+    doLast {
+        println "I'm Gradle"
+    }
+}
+
+
+/* dynamic task */
+4.times { counter ->
+    task "task$counter" {
+        doLast {
+            println "I'm task number $counter"
+        }
+    }
+}
+
+
+task0.dependsOn task2, task3
+
