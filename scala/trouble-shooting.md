@@ -138,3 +138,15 @@ scala> testmap.flatMap(_._2)
 res4: scala.collection.immutable.Iterable[String] = List(hello, world, test)
 ```
 
+### 문자열에서 가장 마지막 글자만 제거하는 법
+
+```
+scala> var t = "test123!"
+t: String = test123!
+
+scala> t.dropRight(1)
+res5: String = test123
+
+scala>
+```
+
