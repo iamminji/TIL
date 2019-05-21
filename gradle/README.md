@@ -24,3 +24,12 @@ $ gradle -q hello # 결과 값만 보여줌 (로그 없이)
 ref
 - [https://docs.gradle.org/current/userguide/tutorial_using_tasks.html](https://docs.gradle.org/current/userguide/tutorial_using_tasks.html)
 
+
+## 다른 gradle 파일 명 사용하기
+
+b 옵션을 붙이면 다른 이름을 가진 gradle task 파일 이름도 사용할 수 있다.
+
+```
+gradle -b sample.gradle task_name
+```
+
