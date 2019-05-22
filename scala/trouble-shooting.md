@@ -150,3 +150,78 @@ res5: String = test123
 scala>
 ```
 
+### 순환 참조
+
+부모 클래스가 하위 클래스를 참조하는 경우, 순환 참조 문제가 생겨 컴파일이 불가능하다. 이 때 모든 클래스는 하나의 `.scala` 파일에 넣어서 컴파일해야 한다.
+
+### custom 정렬하기
+
+기본적으로 scala List 에는 `sortWith` 이라는 메서드가 있다. 해당 메서드의 인자 값으로 키 (정확히는 정렬 함수) 를 넣어주면 custom 정렬이 가능하다.
+
+아래의 예는 path 를 가장 긴 길이 순으로 정렬한 것이다.
+
+```
+val rules = scala.collection.mutable.SortedSet.empty[String]
+rules += "/hello/world"
+rules += "/hello/world/1234"
+rules += "/hello/world/1234/4"
+rules += "/hello/world/456/4/0/2"
+rules += "/hello/4"
+rules += "/hi/4/1/2/3/4/5/6"
+rules += "/hi/4/1/2/3/4/5"
+rules += "/hi/4/1/2/3/4/5/8"
+rules += "/hi/4/1/2"
+rules += "/hello/4/1/2/3/4/5/6"
+
+println(rules mkString " ")
+println("------------------------------------------------")
+rules.foreach(
+    x =>
+        println(x, x.count(_ == '/'))
+)
+println("------------------------------------------------")
+val result = rules.toList.sortWith(_.count(_ == '/') > _.count(_ == '/'))
+println(result mkString " ")
+println("------------------------------------------------")
+result.foreach(
+    x =>
+        println(x, x.count(_ == '/'))
+)
+println("------------------------------------------------")
+}
+```
+
+결과 값은 아래처럼 출력된다. 같은 길이 ('/' 을 포함한 문자 개수) 를 가졌지만 hi 를 가지고 있는 path 보다 hello 가 먼저 등장했다.
+그 이유는 스칼라의 `sorting` 은 기본적으로 `stable` 하기 때문이다. (코드 보니, 내부적으로 `sortWith` 가 `sortBy`를 사용하고 있었다.)
+
+```
+/hello/4 /hello/4/1/2/3/4/5/6 /hello/world /hello/world/1234 /hello/world/1234/4 /hello/world/456/4/0/{VAR_NUM} /hi/4/1/2 /hi/4/1/2/3/4/5 /hi/4/1/2/3/4/5/6 /hi/4/1/2/3/4/5/8
+------------------------------------------------
+(/hello/4,2)
+(/hello/4/1/2/3/4/5/6,8)
+(/hello/world,2)
+(/hello/world/1234,3)
+(/hello/world/1234/4,4)
+(/hello/world/456/4/0/2,6)
+(/hi/4/1/2,4)
+(/hi/4/1/2/3/4/5,7)
+(/hi/4/1/2/3/4/5/6,8)
+(/hi/4/1/2/3/4/5/8,8)
+------------------------------------------------
+/hello/4/1/2/3/4/5/6 /hi/4/1/2/3/4/5/6 /hi/4/1/2/3/4/5/8 /hi/4/1/2/3/4/5 /hello/world/456/4/0/{VAR_NUM} /hello/world/1234/4 /hi/4/1/2 /hello/world/1234 /hello/4 /hello/world
+------------------------------------------------
+(/hello/4/1/2/3/4/5/6,8)
+(/hi/4/1/2/3/4/5/6,8)
+(/hi/4/1/2/3/4/5/8,8)
+(/hi/4/1/2/3/4/5,7)
+(/hello/world/456/4/0/2,6)
+(/hello/world/1234/4,4)
+(/hi/4/1/2,4)
+(/hello/world/1234,3)
+(/hello/4,2)
+(/hello/world,2)
+------------------------------------------------
+```
+
+ref
+- [https://stackoverflow.com/questions/35369243/is-scala-sorting-stable/35369500](https://stackoverflow.com/questions/35369243/is-scala-sorting-stable/35369500)
