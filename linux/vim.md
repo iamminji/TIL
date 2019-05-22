@@ -8,3 +8,15 @@
 
 ref 
 - [https://vim.fandom.com/wiki/Delete_all_lines_containing_a_pattern](https://vim.fandom.com/wiki/Delete_all_lines_containing_a_pattern)
+
+## 모든 라인 밑에 빈 줄을 (new line) 을 넣고 싶을때
+
+숫자만 바꿔서 1 대신에 3을 넣으면 every 3 line 후에 new line 이 들어간다.
+
+```
+:%s/\v(.*\n){1}/&\r
+```
+
+ref
+- [https://stackoverflow.com/questions/10413906/how-to-add-a-line-after-every-few-lines-in-vim](https://stackoverflow.com/questions/10413906/how-to-add-a-line-after-every-few-lines-in-vim)
+
