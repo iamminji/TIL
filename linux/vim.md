@@ -19,4 +19,12 @@ ref
 
 ref
 - [https://stackoverflow.com/questions/10413906/how-to-add-a-line-after-every-few-lines-in-vim](https://stackoverflow.com/questions/10413906/how-to-add-a-line-after-every-few-lines-in-vim)
+- [https://vim.fandom.com/wiki/Add_a_newline_after_given_patterns](https://vim.fandom.com/wiki/Add_a_newline_after_given_patterns)
+
+
+## custom macro 만들기
+
+ref
+- [https://superuser.com/questions/93492/how-to-add-a-command-in-vim-editor](https://superuser.com/questions/93492/how-to-add-a-command-in-vim-editor)
+- [http://vimdoc.sourceforge.net/htmldoc/usr_40.html#40.2](http://vimdoc.sourceforge.net/htmldoc/usr_40.html#40.2)
 
