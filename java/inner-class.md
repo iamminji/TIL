@@ -97,4 +97,12 @@ static inner class는 외부 클래스의 static member의 nested class 이다.
 </code>
 
 
+#### Inner Class 의 장점
+
+- 중첩 클래스는 private 을 포함한 outer class의 모든 멤버에 접근이 가능한 특별한 관계를 표현할 수 있다.
+
+- 중첩 클래스는 가독성과 유지보수성에서 뛰어나다. 논리적으로 클래스 그리고 인터페이스가 한 곳에 있기 때문이다.
+
+- 코드 작성량이 적다. (별개의 클래스 파일을 관리할 필요가 없다.)
+
 참고 https://www.tutorialspoint.com/java/java_innerclasses.htm
