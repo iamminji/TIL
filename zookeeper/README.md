@@ -145,4 +145,4 @@ List<OpResult> results = zk.multi(Arrays.asList(deleteZnode("/a/b"),
 zkUtil.java 에 있는 함수다. 어떤 `znode`와 그 자식 노드 `znode` 들이 있을 때 모든 자식 노드들을 가져오지 않고도, 부모 노드만 사용하여 부모 노드와 하위 자식 노드들을 삭제할 수 있는 함수다.
 
 나의 경우엔 zookeeper 를 사용하는 클래스의 테스트 코드를 생성할 때 유용했다.(쓰고 보니 멀티옵을 사용해도 되는 부분이였다.)
->>>>>>> origin
+
