@@ -37,6 +37,20 @@ RetryPolicy<Integer> retryPolicy = new RetryPolicy<Integer>()
   .withMaxRetries(3);
 ```
 
+주어진 예제들은 단순히 Delay 만큼의 갭을 주고 시도를 해보는 정책이다. 
+만약 backoff 를 하고 싶다면 (시도를 할 때 갭이 아니라 Delay 를 점차 증가시키고 싶다면) withBackoff 를 빌더에 넣으면 된다.
+
+생김새는 아래와 같다. (기본은 2 지수 승이다.)
+
+```
+public RetryPolicy<R> withBackoff(long delay, long maxDelay, ChronoUnit chronoUnit) { 
+    return withBackoff(delay, maxDelay, chronoUnit, 2); 
+}
+```
+
+> 이를 [exponential Backoff](https://en.wikipedia.org/wiki/Exponential_backoff) 라 부른다.
+
+
 `RetryPolicy` 객체를 만들었다면 이제 메서드를 실행한다.
 
 #### 실행
