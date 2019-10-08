@@ -87,3 +87,4 @@ HBase 에서는 클러스터 마스터 (리더) 선출과 가용 서버들의 �
 
 ### 참고
 - [https://zookeeper.apache.org/doc/current/recipes.html#sc_leaderElection](https://zookeeper.apache.org/doc/current/recipes.html#sc_leaderElection)
+- [HBase 의 리더선출](https://github.com/apache/hbase/blob/master/hbase-zookeeper/src/main/java/org/apache/hadoop/hbase/zookeeper/ZKLeaderManager.java)
