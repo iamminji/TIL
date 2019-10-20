@@ -98,3 +98,34 @@ public class MySet<E> extends AbstractSet<E> {
 사용하는 순간에 선언하고 객체를 만든다.
 
 #### 지역 클래스 local member class
+
+#### int 상수 대신 enum을 사용하라
+
+#### ordinal 대신 객체 필드를 사용하라
+`enum` 클래스에는 `ordinal` 이라는 메서드가 있다. `ordinal` 메서드는 `enum` 클래스에서 구현한 상수값에 매핑되는 정수 값을 리턴하는 메서드이다.
+따라서 아래와 같이 사용하는 경우가 있다.
+
+```
+public enum Ensemble {
+  SOLO, DUET, TRIO;
+
+  public int numberOfMusicians() { return ordinal() + 1; }
+}
+```
+
+이는 끔찍한 코드다. 만약에 상수 순서가 바뀐다면 해당 메서드의 결과도 달라지게 되기 때문이다. (쉽게 깨진다.) 따라서 `enum` 상수 값에 매핑되는 정수 값을 사용하고 싶다면 아래와 같이 사용하도록 하자.
+
+```
+public enum Ensemble {
+  SOLO(1), DUET(2), TRIO(3);
+
+  private final int numberOfMusicians;
+  Ensemble(int size) { this.numberOfMusicians = size; }
+  public int numberOfMusicians() { return numberOfMusicians; }
+}
+```
+#### 비트 필드 대신 EnumSet 을 사용하자
+
+#### ordinal 을 배열 첨자로 사용하는 대신 EnumMap 을 이용하라
+
+#### 확장 가능한 enum 을 만들어야 한다면 인터페이스를 이용하라
