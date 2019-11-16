@@ -38,3 +38,18 @@ Mockito.when(A()).thenAnswer(invocation -> {
 ##### 참고
 - [https://stackoverflow.com/questions/18238709/how-to-make-mockito-do-something-every-time-the-method-on-the-mock-is-called](https://stackoverflow.com/questions/18238709/how-to-make-mockito-do-something-every-time-the-method-on-the-mock-is-called)
 
+### 모킹할 때 함수 호출 순서에 따라 리턴 값을 다르게 주고 싶을 때
+무슨 말인가 하면 어떤 함수 `A()` 에 대한 모킹을 할때, 첫번째 호출 될 때는 `a`, 두번째 호출 될 때는 `b` 와 같은 식으로 리턴 받으려는 결과를 호출 순서에 따라 다르게 주고 싶을 때가 있다.
+
+> 예를 들면 처음 호출 때는 실패했지만, 두번째는 성공하는 테스트 코드를 짤 때 같은 경우에
+
+`Mockito` 는 정말 간단하게 이를 지정할 수 있다. 
+
+```
+Mockito.when(A()).thenReturn(a).thenReturn(b);
+```
+또는
+```
+Mockito.when(A()).thenReturn(a, b);
+```
+처럼 하면 된다.
