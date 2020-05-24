@@ -19,3 +19,14 @@ hbase shell> clone_snapshot 'tableSnapshot', 'newTableName'
 hbase shell> delete_snapshot 'tableSnapshot'
 hbase shell> drop 'tableName'
 ```
+<<<<<<< HEAD
+=======
+
+## HBase 의 Locality
+테이블당 리젼 여러개를 갖고 있고 각 리젼은 패밀리 별로 HDFS 3개 (Replication) 으로 이루어져있다. 
+만약 각 패밀리에서 가지고 있는 (하나의) HDFS 가 존재하는 서버와 리젼을 가지고 있는 서버랑
+동일하면 로컬리티는 1이고 그렇지 않다면 전체 패밀리 블럭 사이즈에서 없는 패밀리 블럭 사이즈만큼 1 에서 빠진다.
+
+## HBase Balancer
+
+>>>>>>> 2124b950647f6024ddb753819757901418f5dfd9
