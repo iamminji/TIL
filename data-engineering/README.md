@@ -13,7 +13,30 @@
 ### CAP
 `CAP` 이론은 빅데이터 플랫폼에 자주 등장하는 용어로 분산 시스템에서 일관성(Consistency), 가용성(Availability), 분할 용인(Partition tolerance)이라는 세 가지 조건을 모두 만족하는 것은 없다는 이론이다.
 
+- Consistency
+모든 `읽기` 작업은 가장 최신의 데이터(또는 에러)를 가져올 수 있어야 한다.
+
+- Availability
+모든 `요청` 작업은 성공 해 응답을 받을 수 있어야 한다. 이 때 받는 응답이 가장 최신이지는 않아도 된다.
+
+- Partition tolerance
+시스템이 partition 상태에서도 정상 동작해야 한다. 즉, 어떤 이유에 의해 paritition 으로 분리 되어도 시스템은 계속 동작해야 한다. 여기서 발생하는 원인으로는 네트워크 오류 뿐만 아니라 일부 메시지가 전달 되지 않는 상황도 포함된다.
+
+
+파티션 오류가 발생하면 아래의 두 가지 중에 선택해야 한다.
+
+1. 작업을 취소하여 availability (가용성) 을 낮추고 consistency (일관성) 을 보장한다.
+2. 작업을 진행하여 availaility (가용성) 을 제공하고 consistency (일관성) 을 보장하지 않는다.
+
+
+#### CAP 를 사용하는 예
 주키퍼는 일관성과 분할 용인 (CP) 을 HBase 도 역시 CP를 택하고 있다.
+
+CAP 는 위에서 언급했듯이 3가지를 모두 만족할 수 없다. 주로 C 또는 A 를 택하고 P 를 같이 가져가는 형식이다.
+
+#### 참고
+- [https://blog.seulgi.kim/2018/03/cap-theorem.html](https://blog.seulgi.kim/2018/03/cap-theorem.html)
+
 
 ### Split Brain 이란?
 
