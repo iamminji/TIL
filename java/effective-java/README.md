@@ -1,5 +1,95 @@
 # 이펙티브 자바
 
+### Item4 인스턴스화를 막으려거든 private 생성자를 사용하라
+생성자를 명시하지 않으면 컴파일러가 자동으로 기본 생성자를 만들어준다. 이 때 매개변수를 받지 않는 public 생성자가 만들어지며 사용자는 자동 생성된 것인지 알지 못한다.
+
+인스턴스화를 막으려면 __private 생성자를 추가하면 된다.__
+
+```java
+public class UtilityClass {
+    // 기본 생성자가 만들어지는 것을 막는다(인스턴스화 방지용).
+    private UtilityClass() {
+        throw new AssertrionError();
+    }
+}
+```
+
+이 방식은 상속도 불가능하게 한다.
+
+### Item5 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라
+많은 클래스가 하나 이상의 자원에 의존한다.
+
+다음은 정적 유틸리티 클래스를 잘못 사용한 예이다.
+아래 코드는 유연하지 않고 테스트 하기가 어렵다.
+```java
+    public class SpellChecker {
+        private static final Lexicon dictionary = ...;
+
+        private SpellChecker() {} // 객체 생성 방지
+
+        public static boolean isValid(String word) { ... }
+        public static List<String> suggestions(String typo) { ... }
+    }
+```
+
+싱글턴을 잘못사용한 예. 역시 유연하지 않고 테스트 하기가 어렵다.
+```java
+public class SpellChecker {
+    private final Lexicon dictionary = ...;
+
+    private SpellChecker(...) {}
+    public static SpellChecker INSTANCE = new SpellChecker(...);
+
+    public boolean isValid(String word) { ... }
+    public List<String> suggestions(String typo) { ... }
+}
+```
+
+사용하는 자원 (위의 코드에서는 딕셔너리) 에 따라 동작이 달라지는 클래스에는 정적 유틸리티 클래스나 싱글턴 방식이 적합하지 않다. 이 조건을 만족하려면 인스턴스를 생성할 때 생성자에 필요한 자원을 넘겨주는 방식이 있다.
+
+의존 객체 주입
+```java
+public class SpellChecker {
+    private final Lexicon dictionary;
+
+    public SpellChecker(Lexicon dictionary) {
+        this.dictionary = Objects.requireNonNull(dictionary);
+    }
+
+    public boolean isValid(String word) { ... }
+    public List<String> suggestions(String typo) { ... }
+}
+```
+
+이 패턴에서 생성자에 자원 팩터리를 넘겨주는 방식으로 변형할 수 있다.
+
+```java
+Mosaic create(Supplier<? extends Tile> tileFactory) { ... }
+```
+
+### item6 불필요한 객체 생성을 피하라
+
+아래와 같은 코드는 절대 만들지 말자. 이 코드가 반복문 안에 들어가게 된다면 쓸데 없는 String 인스턴스가 엄청 많이 생성될 수도 있다.
+
+```java
+String s = new String("어쩌고");
+```
+
+대신 아래 코드를 쓴다면 같은 가상 머신 안에서 똑같은 문자열 리터럴을 사용하는 모든 코드가 같은 객체를 재사용함이 보장된다.
+```java
+String s = "어쩌고";
+```
+
+또한 박싱된 기본 타입 보다는 기본 타입을 사용하고, 의도치 않은 오토박싱이 숨어들지 않도록 주의하자.
+
+### item7 다 쓴 객체 참조를 해제하라
+
+자기 메모리를 직접 관리하는 클래스라면 메모리 누수에 주의해야 한다.
+
+### item8 finalizer 와 cleaner 사용을 피하라
+
+`finalizer` 와 `cleaner` 는 즉시 수행된다는 보장이 없다. 자바 언어 명세에서는 수행 시점 뿐만 아니라 수행 여부조차 보장하지 않는다.
+
 ### 새 코드에는 무인자 제네릭 자료형을 사용하지 마라
 rawtype(무인자) 대신에 제네릭을 사용하자. 형 변환에 있어서 안정적이기 때문이다. (자바 1.5부터 가능하며, 기존에 호환성 때문에 남아있는 것들도 있긴 하다.)
 
