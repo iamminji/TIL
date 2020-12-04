@@ -49,6 +49,28 @@ Old 세대에서 더 이상 이동시킬 공간이 없으면 Parallel Collector 
 Parallel GC의 경우엔 상관 없지만,
 ParallelOld GC 의 경우엔 Old 영역의 객체들은 상당수 살아 남을 것이고, 이 때문에 STW의 시간이 힙 크기에 비례하여서 오래 걸리게 될 것이다.
 
+## CMS (Concurrent Mark Sweep)
+CMS (Concurrent Mark Sweep) GC 는 어플리케이션 쓰레드와 GC 쓰레드를 함께 돌릴 수 있다.
+이 때문에 STW 가 ParallelGC 에 비하면 훨씬 짧다.
+
+CMS 를 사용하는 어플리케이션은 실행 속도가 평균적으로 다른 GC 를 사용하는 어플리케이션에 비교하여 느리다.
+CMS 에서는 Compaction 을 하지 않기 때문에 단편화가 발생하고 이 빈 공간들을 관리/운용 하기 위한 작업 때문이다.
+
+총 시간의 98% 이상이 GC 에 사용 되고 Heap 의 2% 미만이 recover 되는 경우  __OutOfMemory__ 를 발생 시킨다.
+(마찬가지로 단편화로 인해 남은 공간에 비해 큰 메모리를 할당해야 하는 경우가 있을 수도 있기 때문이다.)
+필요한 경우 `-XX:-UseCGOverheadLimit` 옵션을 추가해서 이 기능을 비활성화 시킬 수 있다. 
+
+CMS 를 사용하기 위해선 `java -XX:+UseParNewGC -jar Application.java` 와 같이 사용한다.
+
+> CMS GC 가 자바 9 에서 deprecated 되었고 자바 14에서 삭제 되었다. 왜 CMS GC 알고리즘을 삭제 했는지 찾아보니, 코드가 복잡하고 유지 보수하기가 어려워서 없앴다고 한다.
+
+### 참고
+- [https://openjdk.java.net/jeps/363](https://openjdk.java.net/jeps/363)
+- [https://openjdk.java.net/jeps/291](https://openjdk.java.net/jeps/291)
+- [https://blog.gceasy.io/2019/02/18/cms-deprecated-next-steps/](https://blog.gceasy.io/2019/02/18/cms-deprecated-next-steps/)
+- [http://mail.openjdk.java.net/pipermail/jdk9-dev/2017-April/005737.html](http://mail.openjdk.java.net/pipermail/jdk9-dev/2017-April/005737.html)
+- [https://bugs.openjdk.java.net/browse/JDK-8163329](https://bugs.openjdk.java.net/browse/JDK-8163329)
+
 ## 참고
 - https://johngrib.github.io/wiki/java-g1gc/
 - 자바 최적화 (도서 한빛미디어)
