@@ -1,8 +1,5 @@
 # HBase
 
-
-
-
 ## 데이터 처리
 HBase 테이블의 모든 로우는 rowkey 라는 이름의 유일한 식별자를 가지고 있다. HBase 테이블에서 데이터의 위치를 표시하는 데 사용되는 다른 coordinate 들도 있지만 rowkey는 가장 기본적인 수단이다. 관계형 데이터베이스와 같이 rowkey는 unique 하다.
 
@@ -19,8 +16,6 @@ hbase shell> clone_snapshot 'tableSnapshot', 'newTableName'
 hbase shell> delete_snapshot 'tableSnapshot'
 hbase shell> drop 'tableName'
 ```
-<<<<<<< HEAD
-=======
 
 ## HBase 의 Locality
 테이블당 리젼 여러개를 갖고 있고 각 리젼은 패밀리 별로 HDFS 3개 (Replication) 으로 이루어져있다. 
@@ -29,4 +24,3 @@ hbase shell> drop 'tableName'
 
 ## HBase Balancer
 
->>>>>>> 2124b950647f6024ddb753819757901418f5dfd9
