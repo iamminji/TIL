@@ -73,6 +73,135 @@ Hotspotting 을 피하는 세번째 방법으로는 고정 길이 또는숫자�
 ### Try to minimize row and column sizes
 
 
+### Relationship Between RowKeys and Region Splits
+제대로 이해했나 모르겠는데... row key 를 기준으로 region 분할이 일어날 때, region 이 몰리는 (hot) 가능성이 있을 수 있으니, 데이터를 잘 안다면 split 전략을 잘 짜라 이런 의미인거 같다.
+
+## Number of Versions
+
+### Maximum Number of Versions
+maximum version 의 기본 값은 1이다. maximum number of version 을 지나치게 크게 (몇백개 이상) 하면 HFile 이 증가할 수 있다.
+
+### Minimum Number of Versions
+minimum version 의 기본 값은 0 이다. TTL 파라미터랑 주로 같이 사용한다.
+
+## Supported Datatypes
+
+## Joins
+HBase 에는 RDBMS 처럼 Join 관련해서 제공해주는 그런건 없다. 필요하면 hash 를 하든... 직접 설계해서 사용하면 된다.
+
+## Time To Live (TTL)
+ColumnFamilies 는 TTL 을 초 단위로 설정할 수 있다. 설정하면 HBase 에서는 자동으로 expire time 에 다다르면 row 가 삭제ㄷ가 된다. (모든 버젼에 적용됨)
+
+만료된 row 가 포함된 StroeFile 은 minor compaction 때 삭제가 된다.
+`hbase.store.delete.expired.storefile` 옵션을 `false` 로 만들어주면 이 기능이 비활성화 된다.
+아니면 minimum number of version 을 0 보다 작게 해도 비활성화 된다.
+
+
+최근 버젼 HBase 는 cell(row, column family, column qualifier, timestamp, type 다 합친거) 에도 TTL 을 적용할 수 있다.
+
+
+ColumnFamily TTL 과 Cell TTL 의 차이점은
+
+- Cell TTL 은 초 가 아니라 밀리세컨드 단위로 동작한다.
+- Cell TTL 은 ColumnFamily TTL 보다 길 수 없다
+
+## Keeping Deleted Cells
+기본적으로 delete mark 는 시작 시간까지 연장된다. delete mark 가 적용되기 전의 시간 범위를 나타내는 경우에도 Get,Scan 시에 delete 된 cell 은 볼 수 없다.
+
+> 원문이 이건데 잘 해석이 되지 않는다. By default, delete markers extend back to the beginning of time. Therefore, Get or Scan operations will not see a deleted cell (row or column), even when the Get or Scan operation indicates a time range before the delete marker was placed.
+
+
+ColumnFamiliy 는 옵션으로 삭제된 cell 을 보관할 수 있다. 이 경우 삭제된 cell 은 검색할 수 있다.
+
+
+> [여기](https://hbase.apache.org/book.html#cf.keep.deleted) 는 해석하기가 좀 어렵다. 잘 이해가 안감...
+
+
+Raw 스캔을 통해서 deleted cell 검색이 가능하다 뭐 그런 의미 같은데...
+(일반 툼스톤 마커를 이용한 삭제가 아니라 KEEP_DELETED_CELLS 옵션을 통한 그런 것?)
+
+```
+create 'test', {NAME=>'e', VERSIONS=>2147483647}
+put 'test', 'r1', 'e:c1', 'value', 10
+put 'test', 'r1', 'e:c1', 'value', 12
+put 'test', 'r1', 'e:c1', 'value', 14
+delete 'test', 'r1', 'e:c1',  11
+
+hbase(main):017:0> scan 'test', {RAW=>true, VERSIONS=>1000}
+ROW                                              COLUMN+CELL
+ r1                                              column=e:c1, timestamp=14, value=value
+ r1                                              column=e:c1, timestamp=12, value=value
+ r1                                              column=e:c1, timestamp=11, type=DeleteColumn
+ r1                                              column=e:c1, timestamp=10, value=value
+1 row(s) in 0.0120 seconds
+
+hbase(main):018:0> flush 'test'
+0 row(s) in 0.0350 seconds
+
+hbase(main):019:0> scan 'test', {RAW=>true, VERSIONS=>1000}
+ROW                                              COLUMN+CELL
+ r1                                              column=e:c1, timestamp=14, value=value
+ r1                                              column=e:c1, timestamp=12, value=value
+ r1                                              column=e:c1, timestamp=11, type=DeleteColumn
+1 row(s) in 0.0120 seconds
+
+hbase(main):020:0> major_compact 'test'
+0 row(s) in 0.0260 seconds
+
+hbase(main):021:0> scan 'test', {RAW=>true, VERSIONS=>1000}
+ROW                                              COLUMN+CELL
+ r1                                              column=e:c1, timestamp=14, value=value
+ r1                                              column=e:c1, timestamp=12, value=value
+1 row(s) in 0.0120 seconds
+```
+
+위 예제를 보니까 원래는 delete 한 특졍 버젼 미만은 안보여지고 major_compact 를 돌리고 나면 delete 한 것도 사라지는 것 같다.
+
+근데 `KEEP_DELETED_CELLS` 옵션을 적용하게 된다면 아래처럼 되는 것임
+
+```
+hbase(main):005:0> create 'test', {NAME=>'e', VERSIONS=>2147483647, KEEP_DELETED_CELLS => true}
+
+put 'test', 'r1', 'e:c1', 'value', 10
+put 'test', 'r1', 'e:c1', 'value', 12
+put 'test', 'r1', 'e:c1', 'value', 14
+delete 'test', 'r1', 'e:c1',  11
+
+hbase(main):010:0> scan 'test', {RAW=>true, VERSIONS=>1000}
+ROW                                                                                          COLUMN+CELL
+ r1                                                                                          column=e:c1, timestamp=14, value=value
+ r1                                                                                          column=e:c1, timestamp=12, value=value
+ r1                                                                                          column=e:c1, timestamp=11, type=DeleteColumn
+ r1                                                                                          column=e:c1, timestamp=10, value=value
+1 row(s) in 0.0550 seconds
+
+hbase(main):011:0> flush 'test'
+0 row(s) in 0.2780 seconds
+
+hbase(main):012:0> scan 'test', {RAW=>true, VERSIONS=>1000}
+ROW                                                                                          COLUMN+CELL
+ r1                                                                                          column=e:c1, timestamp=14, value=value
+ r1                                                                                          column=e:c1, timestamp=12, value=value
+ r1                                                                                          column=e:c1, timestamp=11, type=DeleteColumn
+ r1                                                                                          column=e:c1, timestamp=10, value=value
+1 row(s) in 0.0620 seconds
+
+hbase(main):013:0> major_compact 'test'
+0 row(s) in 0.0530 seconds
+
+hbase(main):014:0> scan 'test', {RAW=>true, VERSIONS=>1000}
+ROW                                                                                          COLUMN+CELL
+ r1                                                                                          column=e:c1, timestamp=14, value=value
+ r1                                                                                          column=e:c1, timestamp=12, value=value
+ r1                                                                                          column=e:c1, timestamp=11, type=DeleteColumn
+ r1                                                                                          column=e:c1, timestamp=10, value=value
+1 row(s) in 0.0650 seconds
+```
+
+major_compact 를 돌려도 삭제 되지 않는다. 오직 삭제 되려면 major version 보다 커져야만? 삭제가 되는 것 같다. (또는 TTL 에 의해 만료 되거나)
+
+## Secondary Indexes and Alternate Query Paths
+
 
 ## 참고
 - [https://hbase.apache.org/book.html#regionserver_sizing_rules_of_thumb](https://hbase.apache.org/book.html#regionserver_sizing_rules_of_thumb)
