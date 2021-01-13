@@ -18,3 +18,24 @@ git push --force-with-lease origin master
 git commit -i
 ```
 
+## 커밋 바꾸기
+커밋 로그를 하나로 합칠 때 사용한다.
+
+`rebase` 를 써서 본문의 내용을 `pick` 에서 `squash` 로만 바꿔 주면 된다.
+
+이미 푸쉬된 커밋 로그 4개를 합칠 때
+```
+git rebase -i origin/master~4 master
+git push origin +master
+```
+
+## pull 강제
+로컬 git 에서 pull 하는데 merge conflict 가 나는데 local history 는 없어도 상관 없을 때 사용!
+
+```
+git fetch --all
+git reset --hard origin/master.
+```
+
+#### 참고
+- https://stackoverflow.com/questions/1125968/how-do-i-force-git-pull-to-overwrite-local-files
