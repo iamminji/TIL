@@ -37,5 +37,12 @@ git fetch --all
 git reset --hard origin/master.
 ```
 
+## tag force push
+
+```
+git tag -f <tag>
+git push -f origin --tag
+```
+
 #### 참고
 - https://stackoverflow.com/questions/1125968/how-do-i-force-git-pull-to-overwrite-local-files
