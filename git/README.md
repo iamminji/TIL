@@ -37,11 +37,22 @@ git fetch --all
 git reset --hard origin/master.
 ```
 
-## tag force push
+## tag 관련
 
+tag force push 할 때 씀
 ```
 git tag -f <tag>
 git push -f origin --tag
+```
+
+기타
+```
+git tag v0.0.1 (v0.0.1 로 태그 생성)
+git push origin --tags (tag 들 github 에 전부 push)
+git push origin master v0.0.1 (master 브랜치로 v0.0.1 태그 포함한 push)
+git tag -d v0.0.1 (로컬에서 v0.0.1 태그 제거)
+git push origin :v0.0.1 (github 에 v0.0.1 태그 제거)
+git tag (태그 보여주기)
 ```
 
 #### 참고
