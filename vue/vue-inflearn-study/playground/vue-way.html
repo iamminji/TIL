@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset="utf-8">
+  <title>Document</title>
+</head>
+<body>
+  <div id='app'></div>
+  <script>
+    var div = document.querySelector('#app');
+    var viewModel = {};
+
+    // 자바스크립트의 즉시 실행 문법임
+    (function() {
+      function init() {
+        // 객체의 동작을 재 정의 하는 API 이다.
+        Object.defineProperty(viewModel, 'str', {
+          // 속성에 접근했을 때의 동작을 정의
+          get: function() {
+            console.log('접근');
+          },
+          // 속성에 값을 할당했을 때의 동작을 정의
+          set: function(newValue) {
+            console.log('할당', newValue);
+            render(newValue);
+          }
+        });
+      }
+
+      function render(value) {
+        div.innerHTML = value;
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
