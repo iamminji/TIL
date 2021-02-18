@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset="utf-8">
+  <title>Document</title>
+</head>
+<body>
+  <div id='app'>
+    <app-header></app-header>
+    <app-content></app-content>
+    <app-footer></app-footer>
+  </div>
+  <div id='app2'>
+    <app-header></app-header>
+    <!-- 전역으로 등록한 compoent 만 뜬다 -->
+    <app-footer></app-footer>
+  </div>
+  <script src='https://cdn.jsdelivr.net/npm/vue/dist/vue.js' charset='utf-8'>
+  </script>
+  <script>
+    // 전역 컴포넌트
+    Vue.component('app-header', {
+      template: '<h1>Header</h1>'
+    });
+
+    Vue.component('app-content', {
+      template: '<div>content</div>'
+    });
+
+    new Vue({
+      // # 은 id 를 뜻하는 css 선택자 이다.
+      el: '#app',
+      components: {
+        // 지역 컴포넌트 등록 방식
+        // '컴포넌트 이름': '컴포넌트 내용'
+        'app-footer': {
+          template: '<footer>footer</footer>'
+        }
+      }
+    });
+
+    new Vue({
+      el: '#app2'
+    });
+    
+  </script>
+</body>
+</html>
