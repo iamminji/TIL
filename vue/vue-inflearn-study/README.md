@@ -12,3 +12,6 @@ https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide/Obsolete_Pages/Core_J
 #### 전역 컴포넌트와 지역 컴포넌트의 차이점
 전역 컴포넌트는 플러그인, 라이브러리에서만 주로 사용한다.
 일반적으로는 지역 컴포넌트로 등록해 나가면 된다.
+
+#### 상위 컴포넌트 / 하위 컴포넌트
+데이터 (Props) 는 항상 상위에서 하위로 내려가고, 하위에서 위로는 Event (Event emit)만 올라간다.
