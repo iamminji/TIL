@@ -48,6 +48,14 @@ CAP 는 위에서 언급했듯이 3가지를 모두 만족할 수 없다. 주로
 > split brain 을 해결하는 방법 중 하나는 fencing 이 있다. stand by master 가 마스터 (또는 리더) 로 선출 되기 전에 active master 를 한번 더 (?) 죽이는 것이다. active master 가 정말로 죽었는지 모르기 때문에 하는 방법이다. (보통은 quroum 을 이용하긴 함)
 
 
+### 쿼럼 (정족수)
+- 합의를 위한 최소한의 노드 수
+- 과반수 서버 노드를 채택하여 쿼럼을 구성한다.
+- 과반수를 채택하는 이유는 분산 코디네이션 환경에서 예상치 못한 장애가 발생해도 분산 시스템의 일관성을 유지하기 위해서이다.
+
+### 샤딩과 레플리케이션의 차이
+- 샤딩은 데이터를 분산해서 저장
+- 레플리케이션은 같은 데이터를 저장
 
 ### 구글 논문
 - [The Google file system](https://static.googleusercontent.com/media/research.google.com/ko//archive/gfs-sosp2003.pdf)
