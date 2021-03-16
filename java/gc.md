@@ -74,3 +74,22 @@ CMS 를 사용하기 위해선 `java -XX:+UseParNewGC -jar Application.java` 와
 ## 참고
 - https://johngrib.github.io/wiki/java-g1gc/
 - 자바 최적화 (도서 한빛미디어)
+
+# JVM
+
+### 힙 사이즈 확인
+자바 기본 힙 사이즈는 서버 메모리의 1/64 이다.
+
+```
+java -XX:+PrintFlagsFinal -version 2>&1 | grep -i -E 'heapsize|permsize|version'
+```
+
+
+# 기타
+프로세스에서 힙 메모리가 지속적으로 증가하고 Young gc 가 일어나는 일이 있었다.
+프로세스가 하는 일이 아무것도 없는데도, 힙 메모리가 계속해서 증가하는게 이해가 안갔는데, 우선 기본으로 쓰던 parallel gc 대신에 g1gc 로 바꿨더니 힙 메모리 증가 패턴이 달라졌다.
+그리고 young gc 도 일어나지 않았다.
+
+
+공부를...좀 더 해봐야할듯..
+
