@@ -1,4 +1,7 @@
 .idea/
 out/
 .gradle/
+*.out
+.vscode/
+*.dSYM/
 
