@@ -1,6 +1,12 @@
 # 도커
 
+## ENTRYPOINT 와 CMD 의 차이
+
+## ADD 와 COPY 의 차이
+
 ## 도커 자주 쓰는 명령어
+
+`docker run` 는 pull, create, start, attach (-i, -t 옵션을 사용했을 떄)ㅁ 와 같ㅇ다.
 
 `docker pull` 리모트에서 도커 이미지를 가져온다.
 

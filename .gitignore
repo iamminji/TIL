@@ -4,4 +4,6 @@ out/
 *.out
 .vscode/
 *.dSYM/
+target/
+*.lock
 

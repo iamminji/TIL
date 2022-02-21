@@ -1,21 +1,53 @@
-# HBase
+# HBase Nutshell
+
+- 임의 접근 가능하며 hdfs 위에서 구동이 된다.
+- HBase 에서 데이터를 저장할 때 WAL, 멤스토어에 저장 된다. 멤스토어는 쓰기 버퍼 같은 거고 가득 차면 HFile 형태로 디스크에 flush 하여 메모리를 비운다.
+
+## HBase 구조의 장점
+- 강력한 일관성 모델 (모든 리더는 같은 값을 본다.)
+- 자동으로 스케일
+- 복구
+- 하둡 (HDFS) 기반인 것에 오는 장점...
+
+## Compaction
+### Major Compaction
+메이저 컴팩션은 리전에 있는 모든 HFile 들을 모아서 컬럼당 하나의 HFile 로 만든다. 이 과정에서 필요없는 Cell, 시간이 초과된 Cell 등을 제거해서 전반적인 읽기 성능을 높인다. 대량의 파일들에 대한 읽기/쓰기 작업이 일어나기 때문에 디스크 I/O 와 트래픽 증가가 발생할 수 있다.
+
+### Minor Compaction
+마이너 컴팩션은 여러 개의 HFile 들을 하나의 큰 HFile 로 통합한다.
+
+### In Memory Compaction
+hbase 2 점대에 등장한건데 RAM 으로 동작하는? 뭐 그런거라는데 사실 잘 이해가 안감 ㅜ
+
+## Region
+테이블의 row 를 수평 분할 한 것
+
+## region split 
+리젼이 너무 커지면 분할 된다. (밸런서로 어떤 리젼이 어떻게 이동할지 정할 수 있음)
+
+### pre split
+
+
+## region move
+리젼이 분할한 후에 바로 이동하지 않고, 물리적 이동은 다음 컴팩션 때 진행된다.
+
+## 툼스톤 마킹
+hbase 는 row 를 바로 삭제 하지 않고 툼스톤 마커라는 이름으로 마킹한다. 실제 삭제는 메이저 컴팩션때 진행된다.
+
+## 네임 노드 역할
+보통 HMaster 를 네임노드 서버랑 같이 띄운다.
+
+## 데이터 노드 역할
+보통 RegionServer 를 데이터노트랑 같이 띄운다. 로컬리티 향상을 위해서?
+
+## 주키퍼의 역할
+코디네이션 역할이다. 클라이언트가 리젼 서버랑 통신할 때 리젼 서버 정보를 주키퍼를 통해 가져온다.
+
+## HMaster
+HBase 마스터이다. 리젼 서버에 대한 정보랑 리젼 시작, 리젼 재 할당, 리젼 복구등을 담당한다고 하는데...
 
 ## 데이터 처리
 HBase 테이블의 모든 로우는 rowkey 라는 이름의 유일한 식별자를 가지고 있다. HBase 테이블에서 데이터의 위치를 표시하는 데 사용되는 다른 coordinate 들도 있지만 rowkey는 가장 기본적인 수단이다. 관계형 데이터베이스와 같이 rowkey는 unique 하다.
-
-
-#### HBase 테이블 이름 변경
-HBase 는 테이블 `rename` 개념이 없고, 테이블 명을 변경해주기 위해선 `snapshot`을 뜨고 해당 스냅샷의 이름을 바꿔야 한다.
-
-뜬 `snapshot`으로 다시 테이블 생성 `restore` 하면 기존 이름으로 생성되므로 주의한다.
-
-```
-hbase shell> disable 'tableName'
-hbase shell> snapshot 'tableName', 'tableSnapshot'
-hbase shell> clone_snapshot 'tableSnapshot', 'newTableName'
-hbase shell> delete_snapshot 'tableSnapshot'
-hbase shell> drop 'tableName'
-```
 
 ## HBase 의 Locality
 테이블당 리젼 여러개를 갖고 있고 각 리젼은 패밀리 별로 HDFS 3개 (Replication) 으로 이루어져있다. 

@@ -77,8 +77,16 @@ CMS 를 사용하기 위해선 `java -XX:+UseParNewGC -jar Application.java` 와
 
 # JVM
 
-### 힙 사이즈 확인
+## 힙 사이즈
+
+### 기본 힙 사이즈
 자바 기본 힙 사이즈는 서버 메모리의 1/64 이다.
+
+- https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gc-ergonomics.html
+- https://docs.oracle.com/javase/9/gctuning/garbage-first-garbage-collector.htm#JSGCT-GUID-ED3AB6D3-FD9B-4447-9EDF-983ED2F7A573
+- https://stackoverflow.com/questions/4667483/how-is-the-default-max-java-heap-size-determined
+
+### 힙 사이즈 확인
 
 ```
 java -XX:+PrintFlagsFinal -version 2>&1 | grep -i -E 'heapsize|permsize|version'
