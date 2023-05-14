@@ -1,5 +1,5 @@
 fn main() {
-    ex8()
+    ex4()
 }
 
 fn ex1() {
@@ -31,6 +31,8 @@ fn ex4() {
     let result = loop {
         counter += 1;
         if counter == 10 {
+            // break 자체가 return 구문 역할? 같은걸 해서
+            // 세미콜론이 있어도 되고 없어도 되고 상관 없음
             break counter * 2;
         }
     };

@@ -19,6 +19,7 @@ fn _ex1() {
     let user3 = User {
         email: String::from("user3@example.com"),
         username: String::from("user3"),
+        // 나머지 필드에는 user1의 값을 사용하라는 문법
         ..user1
     };
 }

@@ -13,32 +13,58 @@ fn _ex2() {
     let s1 = String::from("hello");
     let s2 = s1;
 
-    // println!("{}, world", s1);
     println!("{}, world", s2);
 
     // 러스트에서는 변수가 범위를 벗어나면 자동으로 drop 함수를 호출하여 메모리를 해제 함
     // 그런데 두 변수가 같은 메모리를 참조하고 있기 때문에 실행 시 에러가 난다
     // 이를 dobule free error 라고 한다.
+    // 변수 복사는, 얕은 복사처럼 보이지만 러스트는 첫 번째 변수 s1을 무효화 시키므로 복사가 아니라 move라고 한다.)
+
+    // s1 을 사용하려고 하면 value borrowed here after move 라는 에러가 뜬다.
+    // println!("{}, world", s1);
+
+    // s1은 유효하지 않기 때문에
+    // scope를 벗어나면 s2만 drop 된다.
+}
+
+fn _ex2_2() {
+    // 정수형 타입은 스택에 저장되어서 move 할 필요가 없음
+    // 이를 Copy 라고 한다. (스택 데이터 복사)
+    let x = 5;
+    let y = x;
+
+    println!("{}", x);
+    println!("{}", y);
+
+    // Copy 트레이트를 사용하는 일반적인 경우는
+    // integer, boolean, char 등이 있다.
+    // Drop 트레이트가 적용되어 있으면 Copy 트레이트는 못한다고 보면 된다.
 }
 
 fn _ex3() {
+    // 스택이 아니라 힙 데이터를 복사하려면 Clone을 쓴다.
     let s1 = String::from("hello");
     let s2 = s1.clone();
 
+    // 힙 데이터가 복사되었으므로 s1, s2 둘 다 drop 가능하다.
     println!("s1 = {}, s2 = {}", s1, s2)
 }
 
 fn _ex4() {
     let s = String::from("hello");
     _takes_ownership(s);
-    // 이후 s 를 사용하려고 하면 에러가 난다.
-    // println!("wow, {}", s);
+    // s가 함수 내로 이동되었기 때문에 더 이상 유효하지 않다.
+    // println!("Not worked, {}", s);
     let x = 5;
     _makes_copy(x);
+    // x는 i32 (스택 복사 Copy 트레이트가 구현되어 있음) 이므로
+    // 함수 내로 이동되었어도 유효하다.
+    println!("It worked!, {}", x);
 }
 
 fn _takes_ownership(some_string: String) {
     println!("{}", some_string);
+    // some_string 은 여기서 메서드 벗어날 때 drop 된다.
 }
 
 fn _makes_copy(some_integer: i32) {
@@ -54,7 +80,13 @@ fn _ex5() {
     println!("{}", s2);
     // 변수 s2가 takes_and_gives_back 함수로 옮겨간 후 리턴 값은 변수 s3로 옮겨진다.
     let s3 = _takes_and_gives_back(s2);
+    // 여기서 s2을 사용하면 move 되었다고 해서 컴파일 에러가 난다.
+    // 함수에 s2를 넘기고 그걸 다시 사용하고 싶은데, 이럴 때 마다 _takes_and_gives_back 같은걸 사용하는 건 너무 귀찮은 일이다.
+    // 그래서 참조 reference 개념이 등장했다.
     println!("{}", s3);
+
+    // 함수를 벗어나면 s1, s3(소유권을 받음) 는 drop되지만 s2는 _takes_and_gives_back로 이동되었으므로
+    // s2는 drop 호출되지 않는다.
 }
 
 fn _gives_ownership() -> String {
@@ -74,14 +106,20 @@ fn _ex6() {
     println!("'{}'의 길이는 {}입니다.", s1, len);
 
     // 참조에 mut 키워드를 추가하면 수정이 가능하다.
+    // 가변 참조를 만드는 것이다.
     let mut s2 = String::from("hello");
-    _change(&mut s2);
-    println!("{}", s2)
+    let r1 = &mut s2;
+    // 가변 참조도 제약이있는데 같은 데이터 (여기서는 s2) 에 대한 가변 참조는 하나만 만들 수 있다.
+    // let r2 = &mut s2;
+    _change(r1);
+    println!("{}", s2);
 }
 
 fn _calculate_length(s: &String) -> usize {
+    // s를 borrow 한다 라고 표현한다.
     s.len()
-    // 이 값은 참조/대여했기 때문에 s를 수정할 수는 없다.
+    // 이 값은 참조/대여했기(소유권이 없음) 때문에 s를 수정할 수는 없다.
+    // 그래서 s를 다시 주기 위해서 리턴할 필요가 없다. (그 전에는 튜플같은 걸 써서 원래 값과 필요한 값 / 여기서는 길이 등을 같이 리턴해야했음)
     // 기본적으로 불변이다.
 }
 
